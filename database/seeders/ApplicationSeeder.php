@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Application;
 use Illuminate\Database\Seeder;
 
 class ApplicationSeeder extends Seeder
@@ -18,8 +18,11 @@ class ApplicationSeeder extends Seeder
                 'role' => 'Software Engineer',
                 'applied_at' => now()->subDays(10),
                 'status' => 'applied',
-                'job_url' => 'https://techcorp.com/jobs/123',
-                'salary_range' => '$80,000 - $100,000',
+                'current_ctc' => 250000,
+                'expected_ctc' => 300000,
+                'location' => 'Ahmedabad',
+                'interview_on' => now()->subDays(10),
+                'notice_period' => 0,
                 'notes' => 'Excited about this opportunity!',
             ],
             [
@@ -27,8 +30,11 @@ class ApplicationSeeder extends Seeder
                 'role' => 'Frontend Developer',
                 'applied_at' => now()->subDays(5),
                 'status' => 'interview',
-                'job_url' => 'https://innovatex.com/careers/456',
-                'salary_range' => '$70,000 - $90,000',
+                'current_ctc' => 250000,
+                'expected_ctc' => 300000,
+                'location' => 'Ahmedabad',
+                'interview_on' => now()->subDays(10),
+                'notice_period' => 0,
                 'notes' => 'Interview scheduled for next week.',
             ],
             [
@@ -36,8 +42,11 @@ class ApplicationSeeder extends Seeder
                 'role' => 'Data Analyst',
                 'applied_at' => now()->subDays(15),
                 'status' => 'offer',
-                'job_url' => null,
-                'salary_range' => '$60,000 - $80,000',
+                'current_ctc' => 250000,
+                'expected_ctc' => 300000,
+                'location' => 'Ahmedabad',
+                'interview_on' => now()->subDays(10),
+                'notice_period' => 0,
                 'notes' => null,
             ],
             [
@@ -45,14 +54,17 @@ class ApplicationSeeder extends Seeder
                 'role' => 'Full Stack Developer',
                 'applied_at' => now()->subDays(20),
                 'status' => 'rejected',
-                'job_url' => null,
-                'salary_range' => null,
+                'current_ctc' => 250000,
+                'expected_ctc' => 300000,
+                'location' => 'Ahmedabad',
+                'interview_on' => now()->subDays(10),
+                'notice_period' => 0,
                 'notes' => null,
             ],
         ];
 
         foreach ($applications as $application) {
-            \App\Models\Application::create($application);
+            Application::create($application);
         }
     }
 }

@@ -17,8 +17,11 @@ return new class extends Migration
             $table->string('role');
             $table->date('applied_at');
             $table->enum('status', ['applied', 'interview', 'offer', 'rejected'])->default('applied');
-            $table->string('job_url')->nullable();
-            $table->string('salary_range')->nullable();
+            $table->string('current_ctc')->nullable();
+            $table->string('expected_ctc')->nullable();
+            $table->string('location')->nullable();
+            $table->date('interview_on')->nullable();
+            $table->unsignedSmallInteger('notice_period')->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();
         });

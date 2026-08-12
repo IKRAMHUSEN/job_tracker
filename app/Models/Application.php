@@ -9,9 +9,12 @@ use Illuminate\Database\Eloquent\Model;
     'company',
     'role',
     'applied_at',
+    'interview_on',
+    'location',
+    'notice_period',
+    'current_ctc',
+    'expected_ctc',
     'status',
-    'job_url',
-    'salary_range',
     'notes',
 ])]
 class Application extends Model
@@ -20,6 +23,7 @@ class Application extends Model
     {
         return [
             'applied_at' => 'date',
+            'interview_on' => 'date',
         ];
     }
 

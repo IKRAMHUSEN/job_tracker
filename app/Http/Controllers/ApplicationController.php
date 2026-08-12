@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Application;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
 class ApplicationController extends Controller
@@ -13,12 +14,19 @@ class ApplicationController extends Controller
     public function index(Request $request)
     {
         $status = $request->query('status');
+        $today = today();
 
         $applications = Application::query()
             ->when($status, function ($query, $status) {
                 return $query->where('status', $status);
             })
             ->latest('applied_at')->get();
+
+        $interviewReminders = Application::query()
+            ->whereNotNull('interview_on')
+            ->whereBetween('interview_on', [$today, $today->copy()->addDays(2)])
+            ->orderBy('interview_on')
+            ->get();
 
         $stats = [
             'total' => Application::count(),
@@ -28,7 +36,7 @@ class ApplicationController extends Controller
             'rejected' => Application::where('status', 'rejected')->count(),
         ];
 
-        return view('applications.index', compact('applications', 'status', 'stats'));
+        return view('applications.index', compact('applications', 'status', 'stats', 'interviewReminders'));
     }
 
     /**
@@ -49,7 +57,11 @@ class ApplicationController extends Controller
             'role' => 'required|string|max:255',
             'applied_at' => 'required|date',
             'status' => 'required|in:applied,interview,offer,rejected',
-            'salary_range' => 'nullable|string|max:255',
+            'current_ctc' => 'nullable|numeric',
+            'expected_ctc' => 'nullable|numeric',
+            'location' => 'nullable|string|max:255',
+            'interview_on' => 'nullable|date',
+            'notice_period' => 'nullable|string',
             'notes' => 'nullable|string',
         ]);
 
@@ -66,9 +78,9 @@ class ApplicationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Application $application): View
     {
-        //
+        return view('applications.show', compact('application'));
     }
 
     /**
@@ -89,7 +101,11 @@ class ApplicationController extends Controller
             'role' => 'required|string|max:255',
             'applied_at' => 'required|date',
             'status' => 'required|in:applied,interview,offer,rejected',
-            'salary_range' => 'nullable|string|max:255',
+            'current_ctc' => 'nullable|numeric',
+            'expected_ctc' => 'nullable|numeric',
+            'location' => 'nullable|string|max:255',
+            'interview_on' => 'nullable|date',
+            'notice_period' => 'nullable|string',
             'notes' => 'nullable|string',
         ]);
 

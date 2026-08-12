@@ -16,6 +16,31 @@
         </a>
     </div>
 
+    @if ($interviewReminders->isNotEmpty())
+        <div class="mb-6 rounded-xl border border-yellow-200 bg-yellow-50 p-4 text-yellow-900">
+            <div class="flex items-center gap-2 mb-3">
+                <x-heroicon-o-bell-alert class="w-5 h-5" />
+                <h3 class="font-semibold">Priority interview reminder</h3>
+            </div>
+
+            <div class="grid gap-2">
+                @foreach ($interviewReminders as $application)
+                    <a href="{{ route('applications.show', $application) }}"
+                        class="flex items-center justify-between rounded-lg bg-white/70 px-3 py-2 text-sm hover:bg-white">
+                        <span>
+                            <span class="font-medium">{{ $application->company }}</span>
+                            <span class="text-yellow-800">— {{ $application->role }}</span>
+                        </span>
+                        <span class="font-medium">
+                            {{ $application->interview_on->isToday() ? 'Today' : ($application->interview_on->isTomorrow() ? 'Tomorrow' : 'In 2 days') }}
+                            · {{ $application->interview_on->format('M j, Y') }}
+                        </span>
+                    </a>
+                @endforeach
+            </div>
+        </div>
+    @endif
+
     {{-- stats --}}
     <div class="grid grid-cols-4 gap-4 mb-6">
         {{-- total applications --}}
@@ -74,7 +99,10 @@
     @else
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             @foreach ($applications as $application)
-                <div class="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition-shadow">
+                <div class="relative bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition-shadow">
+                    <a href="{{ route('applications.show', $application) }}" class="absolute inset-0 rounded-xl"
+                        aria-label="View {{ $application->company }} application">
+                    </a>
                     <div class="flex items-start justify-between mb-2">
                         <div>
                             <h3 class="font-semibold text-gray-900">{{ $application->company }}</h3>
@@ -92,19 +120,18 @@
                     </div>
 
                     {{-- actions --}}
-                    <div class="flex items-center gap-3 text-sm">
+                    <div class="relative z-10 flex items-center gap-3 text-sm">
                         <a href="{{ route('applications.edit', $application) }}"
                             class="text-indigo-600 hover:text-indigo-500 font-medium">
                             <x-heroicon-o-pencil class="w-4 h-4 inline-block mr-1" />
-                        Edit
+                            Edit
                         </a>
 
                         <form action="{{ route('applications.destroy', $application) }}" method="POST"
                             onsubmit="return confirm('Delete this application?')">
                             @csrf
                             @method('DELETE')
-                            <button type="submit"
-                                class="text-red-500 hover:text-red-600 font-medium cursor-pointer">
+                            <button type="submit" class="text-red-500 hover:text-red-600 font-medium cursor-pointer">
                                 <x-heroicon-o-trash class="w-4 h-4 inline-block mr-1" />
                                 Delete</button>
                         </form>
