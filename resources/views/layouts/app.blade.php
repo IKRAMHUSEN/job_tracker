@@ -19,6 +19,7 @@
     </head>
     <body class="bg-gray-50 min-h-screen">
         <div class="max-w-6xl mx-auto px-4 py-8">
+            @include('partials.flash')
             @yield('content')
         </div>
     </body>

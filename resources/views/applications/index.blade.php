@@ -2,7 +2,7 @@
 
 @section('content')
     {{-- header --}}
-    <div class="flex-items-center justify-between mb-6">
+    <div class="flex items-center justify-between mb-6">
         <div>
             <h2 class="text-2xl font-bold text-gray-800">Job Applications</h2>
             <p class="text-gray-500 text-sm">Track every application in one place</p>
@@ -94,9 +94,8 @@
                     {{-- actions --}}
                     <div class="flex items-center gap-3 text-sm">
                         <a href="{{ route('applications.edit', $application) }}"
-                            class="text-indigo-600 hover:text-indigo-500 font-medium>
-                            <x-heroicon-o-pencil class="w-4
-                            h-4 inline-block mr-1" />
+                            class="text-indigo-600 hover:text-indigo-500 font-medium">
+                            <x-heroicon-o-pencil class="w-4 h-4 inline-block mr-1" />
                         Edit
                         </a>
 
@@ -105,7 +104,9 @@
                             @csrf
                             @method('DELETE')
                             <button type="submit"
-                                class="text-red-500 hover:text-red-600 font-medium cursor-pointer">Delete</button>
+                                class="text-red-500 hover:text-red-600 font-medium cursor-pointer">
+                                <x-heroicon-o-trash class="w-4 h-4 inline-block mr-1" />
+                                Delete</button>
                         </form>
                     </div>
                 </div>
